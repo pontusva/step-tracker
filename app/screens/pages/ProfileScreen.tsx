@@ -5,11 +5,30 @@ import { getAuth } from 'firebase/auth';
 export const ProfileScreen = ({ navigation, route }) => {
   const [pastStepCount, setPastStepCount] = useState(0);
   const [subscription, setSubscription] = useState(null);
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  const syncSteps = async () => {
+    try {
+      const response = await fetch('http://192.168.1.237:5000/sync-steps', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          steps: pastStepCount,
+          uid: user.uid,
+        }),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const subscribe = async () => {
     const isAvailable = await Pedometer.isAvailableAsync();
-    const auth = getAuth();
-    const user = auth.currentUser;
 
     if (isAvailable) {
       const end = new Date();
@@ -43,7 +62,7 @@ export const ProfileScreen = ({ navigation, route }) => {
         <Text style={styles.text}>
           Do you want to share this with your friends?
         </Text>
-        <Pressable style={styles.button}>
+        <Pressable onPress={syncSteps} style={styles.button}>
           <Text style={styles.text}>Yes</Text>
         </Pressable>
       </View>
