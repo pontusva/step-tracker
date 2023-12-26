@@ -5,6 +5,7 @@ import { getAuth } from 'firebase/auth';
 export const ProfileScreen = ({ navigation, route }) => {
   const [pastStepCount, setPastStepCount] = useState(0);
   const [subscription, setSubscription] = useState(null);
+  const [currentStepCount, setCurrentStepCount] = useState(0);
   const auth = getAuth();
   const user = auth.currentUser;
 
@@ -40,6 +41,9 @@ export const ProfileScreen = ({ navigation, route }) => {
         setPastStepCount(pastStepCountResult.steps);
       }
     }
+    return Pedometer.watchStepCount(result => {
+      setCurrentStepCount(result.steps);
+    });
   };
 
   useEffect(() => {
@@ -51,7 +55,7 @@ export const ProfileScreen = ({ navigation, route }) => {
       setSubscription(sub);
     });
     return () => subscription && subscription.remove();
-  }, []);
+  }, [currentStepCount]);
   return (
     <>
       <View style={styles.container}>
