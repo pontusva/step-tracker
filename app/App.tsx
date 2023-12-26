@@ -2,7 +2,6 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
-const Tab = createBottomTabNavigator();
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { HomeScreen } from './screens/pages/HomeScreen';
 import { ProfileScreen } from './screens/pages/ProfileScreen';
@@ -11,6 +10,8 @@ import SignInScreen from './screens/pages/SignInScreen';
 import SignUpScreen from './screens/pages/SignUpScreen';
 import { FriendsScreen } from './screens/pages/FriendsScreen';
 import { auth } from './firebase.config';
+
+const Tab = createBottomTabNavigator();
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
