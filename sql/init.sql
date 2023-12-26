@@ -7,7 +7,8 @@ CREATE TABLE steps (
   id SERIAL PRIMARY KEY,
   uid VARCHAR(255) REFERENCES users(uid),
   date DATE,
-  step_count INT,
+  step_count_week INT,
+  step_count_day INT,
   UNIQUE(uid, date)
 );
 
