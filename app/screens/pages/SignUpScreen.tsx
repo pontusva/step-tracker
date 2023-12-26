@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { Button, StyleSheet, TextInput } from 'react-native';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { TextInput, Button, StyleSheet } from 'react-native';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth';
 
 const SignUpScreen = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -14,16 +19,29 @@ const SignUpScreen = () => {
         email,
         password
       );
-      // Signed up
       const user = userCredential.user;
-      console.log('User signed up:', user);
+
+      // Get the UID
+      const uid = user.uid;
+
+      // Update the user's profile with the entered name
+      await updateProfile(user, { displayName: name });
+
+      // Here you can also save the user's information to your own database if needed
+      // You can use the uid to associate the user's information with their Firebase account
     } catch (error) {
-      console.error('Error signing up:', error);
+      console.error(error);
     }
   };
 
   return (
     <>
+      <TextInput
+        style={styles.input}
+        value={name}
+        onChangeText={setName}
+        placeholder="Name"
+      />
       <TextInput
         style={styles.input}
         value={email}
