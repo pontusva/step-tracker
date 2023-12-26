@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS friendships;
+DROP TABLE IF EXISTS steps;
+DROP TABLE IF EXISTS users;
+
 CREATE TABLE users (
   uid VARCHAR(255) PRIMARY KEY,
   name VARCHAR(255)
@@ -6,8 +10,7 @@ CREATE TABLE users (
 CREATE TABLE steps (
   id SERIAL PRIMARY KEY,
   uid VARCHAR(255) REFERENCES users(uid),
-  date DATE,
-  step_count_week INT,
+  date DATE DEFAULT CURRENT_DATE,
   step_count_day INT,
   UNIQUE(uid, date)
 );

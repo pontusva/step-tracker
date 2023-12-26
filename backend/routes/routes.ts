@@ -5,6 +5,9 @@ interface SignUp {
   Body: { uid: string; name: string };
 }
 
+interface SyncSteps {
+  Body: { uid: string; steps: number };
+}
 export async function routes(fastify: FastifyInstance) {
   fastify.get('/', async () => {
     return { hello: 'world' };
@@ -13,6 +16,29 @@ export async function routes(fastify: FastifyInstance) {
   fastify.post('/', async (request, reply) => {
     reply.code(201).send({ hello: 'world' });
   });
+
+  fastify.post(
+    '/sync-steps',
+    async (request: FastifyRequest<SyncSteps>, reply: FastifyReply) => {
+      const { uid, steps } = request.body;
+      try {
+        const result = await fastify.pg.query(queries.sync.syncSteps, [
+          uid,
+          steps,
+        ]);
+        if (result.rowCount === 0) {
+          reply.code(500).send({ error: 'Failed to sync steps' });
+          return;
+        }
+        return result.rows[0];
+      } catch (error) {
+        console.error(error);
+        reply
+          .code(500)
+          .send({ error: 'An error occurred while syncing steps' });
+      }
+    }
+  );
 }
 
 export async function auth(fastify: FastifyInstance) {
@@ -22,7 +48,7 @@ export async function auth(fastify: FastifyInstance) {
       try {
         const { uid, name } = request.body;
         console.log(uid, name);
-        // Check if the required fields are provided
+
         if (!uid || !name) {
           reply.code(400).send({ error: 'Missing required fields' });
           return;
@@ -30,7 +56,6 @@ export async function auth(fastify: FastifyInstance) {
 
         const result = await fastify.pg.query(queries.auth.signUp, [uid, name]);
 
-        // Check if the user was inserted successfully
         if (result.rowCount === 0) {
           reply.code(500).send({ error: 'Failed to create user' });
           return;

@@ -1,13 +1,15 @@
 import { Text, StyleSheet, View, Pressable } from 'react-native';
 import { useState, useEffect } from 'react';
 import { Pedometer } from 'expo-sensors';
-
+import { getAuth } from 'firebase/auth';
 export const ProfileScreen = ({ navigation, route }) => {
   const [pastStepCount, setPastStepCount] = useState(0);
   const [subscription, setSubscription] = useState(null);
 
   const subscribe = async () => {
     const isAvailable = await Pedometer.isAvailableAsync();
+    const auth = getAuth();
+    const user = auth.currentUser;
 
     if (isAvailable) {
       const end = new Date();
@@ -35,7 +37,6 @@ export const ProfileScreen = ({ navigation, route }) => {
     <>
       <View style={styles.container}>
         <Text style={styles.text}>
-          {' '}
           The last 24 hours you've taken{' '}
           <Text style={styles.span}>{pastStepCount}</Text> steps
         </Text>
