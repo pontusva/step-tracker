@@ -1,6 +1,7 @@
-import { Button, ImageBackground, StyleSheet, Text } from 'react-native';
+import { ImageBackground, StyleSheet, Text } from 'react-native';
 import { getAuth } from 'firebase/auth';
 import { useEffect } from 'react';
+import StepCounter from '../components/StepCounter';
 export const HomeScreen = ({ navigation }) => {
   const auth = getAuth().currentUser;
   console.log(auth.displayName);
@@ -16,8 +17,8 @@ export const HomeScreen = ({ navigation }) => {
         source={require('../../assets/homescreen.jpg')}
         resizeMode="cover"
         style={styles.image}>
-        {/* <Button title="user" onPress={() => console.log(auth.displayName)} /> */}
-        <Text style={styles.text}>Hej {auth.displayName}</Text>
+        {/* <Text style={styles.text}>Hej {auth.displayName}</Text> */}
+        <StepCounter />
       </ImageBackground>
     </>
   );
