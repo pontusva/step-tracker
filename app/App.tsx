@@ -12,6 +12,7 @@ import {
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { HomeScreen } from './screens/pages/HomeScreen';
 import { ProfileScreen } from './screens/pages/ProfileScreen';
+import { SettingsScreen } from './screens/pages/SettingsScreen';
 import SignInScreen from './screens/pages/SignInScreen';
 import SignUpScreen from './screens/pages/SignUpScreen';
 import { initializeApp } from 'firebase/app';
@@ -70,7 +71,7 @@ const App = () => {
                   <Ionicons name="settings-outline" color={color} size={size} />
                 ),
               }}
-              component={ProfileScreen}
+              component={SettingsScreen}
             />
           </>
         ) : (
