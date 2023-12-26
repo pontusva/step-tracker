@@ -1,35 +1,44 @@
-import React from 'react';
-import { SafeAreaView, StyleSheet, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { Button, TextInput } from 'react-native';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const SignInScreen = () => {
-  const [text, onChangeText] = React.useState('Useless Text');
-  const [number, onChangeNumber] = React.useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const signIn = async () => {
+    const auth = getAuth();
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      // Signed in
+      const user = userCredential.user;
+      console.log('User signed in:', user);
+    } catch (error) {
+      console.error('Error signing in:', error);
+    }
+  };
 
   return (
-    <SafeAreaView>
+    <>
       <TextInput
-        style={styles.input}
-        onChangeText={onChangeText}
-        value={text}
+        value={email}
+        onChangeText={setEmail}
+        placeholder="Email"
+        autoCapitalize="none"
       />
       <TextInput
-        style={styles.input}
-        onChangeText={onChangeNumber}
-        value={number}
-        placeholder="useless placeholder"
-        keyboardType="numeric"
+        value={password}
+        onChangeText={setPassword}
+        placeholder="Password"
+        secureTextEntry
       />
-    </SafeAreaView>
+      <Button title="Sign In" onPress={signIn} />
+    </>
   );
 };
-
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-});
 
 export default SignInScreen;
