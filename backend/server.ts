@@ -1,14 +1,13 @@
 import fastify from 'fastify';
-import fastifyPostgres from '@fastify/postgres';
 import dotenv from 'dotenv';
-
+import routes from './routes/routes';
+import dbConnection from './connections/db-connection';
 dotenv.config();
 
 const server = fastify();
 
-server.register(fastifyPostgres, {
-  connectionString: `postgres://${process.env.PGUSERNAME}:${process.env.PGPASSWORD}@localhost/${process.env.PGDATABASE}`,
-});
+server.register(routes);
+server.register(dbConnection);
 
 server.after(async () => {
   try {
