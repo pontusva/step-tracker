@@ -1,12 +1,13 @@
 import { Button, Text } from 'react-native';
-import { getAuth, getAdditionalUserInfo } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 export const HomeScreen = ({ navigation }) => {
   const auth = getAuth().currentUser;
-  console.log(auth);
+  console.log(auth.displayName);
+
   return (
     <>
-      <Text>Welcome</Text>
       <Button title="user" onPress={() => console.log(auth)} />
+      <Text>Welcome, {auth.displayName}</Text>
     </>
   );
 };
