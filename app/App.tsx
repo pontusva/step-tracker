@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -14,10 +14,10 @@ import { auth } from './firebase.config';
 const Tab = createBottomTabNavigator();
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const user = auth.currentUser;
 
-  React.useEffect(() => {
+  useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, user => {
       setIsAuthenticated(!!user);
