@@ -29,6 +29,15 @@ const SignUpScreen = () => {
 
       // Here you can also save the user's information to your own database if needed
       // You can use the uid to associate the user's information with their Firebase account
+      const response = await fetch('http://localhost:3000/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ uid, name }),
+      });
+      const result = await response.json();
+      console.log(result);
     } catch (error) {
       console.error(error);
     }
