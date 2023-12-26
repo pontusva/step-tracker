@@ -3,7 +3,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 const Tab = createBottomTabNavigator();
-import { initializeAuth, getAuth, onAuthStateChanged } from 'firebase/auth';
+import {
+  initializeAuth,
+  getAuth,
+  onAuthStateChanged,
+  getReactNativePersistence,
+} from 'firebase/auth';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { HomeScreen } from './screens/pages/HomeScreen';
 import { ProfileScreen } from './screens/pages/ProfileScreen';
@@ -11,10 +16,14 @@ import SignInScreen from './screens/pages/SignInScreen';
 import SignUpScreen from './screens/pages/SignUpScreen';
 import { initializeApp } from 'firebase/app';
 import firebaseConfig from './firebase.config';
+
+const app = initializeApp(firebaseConfig, {});
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+});
+
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
-  const app = initializeApp(firebaseConfig, {});
-  const auth = initializeAuth(app, {});
   const user = auth.currentUser;
   console.log({ app, auth });
 
