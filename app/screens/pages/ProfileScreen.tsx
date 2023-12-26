@@ -56,6 +56,7 @@ export const ProfileScreen = ({ navigation, route }) => {
     });
     return () => subscription && subscription.remove();
   }, [currentStepCount]);
+
   return (
     <>
       <View style={styles.container}>
@@ -63,9 +64,7 @@ export const ProfileScreen = ({ navigation, route }) => {
           The last 24 hours you've taken{' '}
           <Text style={styles.span}>{pastStepCount}</Text> steps
         </Text>
-        <Text style={styles.text}>
-          Do you want to share this with your friends?
-        </Text>
+        <Text style={styles.text}>Do you want to sync?</Text>
         <Pressable onPress={syncSteps} style={styles.button}>
           <Text style={styles.text}>Yes</Text>
         </Pressable>
