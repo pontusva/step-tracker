@@ -16,12 +16,23 @@ import {
   deleteUser,
   EmailAuthProvider,
   reauthenticateWithCredential,
+  signOut,
 } from 'firebase/auth';
 
 export const SettingsScreen = () => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [passwordDelete, setPasswordDelete] = useState('');
+
+  const logout = async () => {
+    const auth = getAuth();
+    try {
+      await signOut(auth);
+      alert('Logged out successfully');
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const updateName = async () => {
     const auth = getAuth();
@@ -107,6 +118,7 @@ export const SettingsScreen = () => {
             secureTextEntry
           />
           <Button title="Delete Account" onPress={deleteAccount} />
+          <Button title="log out" onPress={logout} />
         </View>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
