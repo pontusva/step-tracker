@@ -25,8 +25,6 @@ export default function App() {
     }
   };
 
-  const removeSubscription = async () => {};
-
   useEffect(() => {
     let subscription;
     subscribe().then(sub => {
