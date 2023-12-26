@@ -17,6 +17,7 @@ import SignInScreen from './screens/pages/SignInScreen';
 import SignUpScreen from './screens/pages/SignUpScreen';
 import { initializeApp } from 'firebase/app';
 import firebaseConfig from './firebase.config';
+import { FriendsScreen } from './screens/pages/FriendsScreen';
 
 const app = initializeApp(firebaseConfig, {});
 const auth = initializeAuth(app, {
@@ -62,6 +63,16 @@ const App = () => {
                 ),
               }}
               component={ProfileScreen}
+            />
+            <Tab.Screen
+              name="Friends"
+              options={{
+                tabBarLabel: 'Friends',
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="add" color={color} size={size} />
+                ),
+              }}
+              component={FriendsScreen}
             />
             <Tab.Screen
               name="Settings"
