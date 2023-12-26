@@ -27,17 +27,19 @@ const SignUpScreen = () => {
       // Update the user's profile with the entered name
       await updateProfile(user, { displayName: name });
 
-      // Here you can also save the user's information to your own database if needed
-      // You can use the uid to associate the user's information with their Firebase account
-      const response = await fetch('http://localhost:3000/auth/signup', {
+      const response = await fetch('http://192.168.1.237:5000/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ uid, name }),
       });
-      const result = await response.json();
-      console.log(result);
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+      } else {
+        console.error('Server responded with status', response.status);
+      }
     } catch (error) {
       console.error(error);
     }

@@ -21,7 +21,7 @@ export async function auth(fastify: FastifyInstance) {
     async (request: FastifyRequest<SignUp>, reply: FastifyReply) => {
       try {
         const { uid, name } = request.body;
-
+        console.log(uid, name);
         // Check if the required fields are provided
         if (!uid || !name) {
           reply.code(400).send({ error: 'Missing required fields' });
