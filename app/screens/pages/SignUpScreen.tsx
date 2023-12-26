@@ -32,7 +32,7 @@ const SignUpScreen = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ uid, name }),
+        body: JSON.stringify({ uid, name, email }),
       });
       if (response.ok) {
         const result = await response.json();

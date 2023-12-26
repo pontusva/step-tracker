@@ -1,6 +1,7 @@
 export default {
   auth: {
-    signUp: 'INSERT INTO users (uid, name) VALUES ($1, $2) RETURNING *',
+    signUp:
+      'INSERT INTO users (uid, name, email) VALUES ($1, $2, $3) RETURNING *',
   },
   sync: {
     syncSteps: `INSERT INTO steps (uid, date, step_count_day) 

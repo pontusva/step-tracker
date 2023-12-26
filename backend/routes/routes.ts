@@ -2,7 +2,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import queries from '../queries';
 
 interface SignUp {
-  Body: { uid: string; name: string };
+  Body: { uid: string; name: string; email: string };
 }
 
 interface SyncSteps {
@@ -50,7 +50,7 @@ export async function auth(fastify: FastifyInstance) {
     '/auth/signup',
     async (request: FastifyRequest<SignUp>, reply: FastifyReply) => {
       try {
-        const { uid, name } = request.body;
+        const { uid, name, email } = request.body;
         console.log(uid, name);
 
         if (!uid || !name) {
@@ -58,7 +58,11 @@ export async function auth(fastify: FastifyInstance) {
           return;
         }
 
-        const result = await fastify.pg.query(queries.auth.signUp, [uid, name]);
+        const result = await fastify.pg.query(queries.auth.signUp, [
+          uid,
+          name,
+          email,
+        ]);
 
         if (result.rowCount === 0) {
           reply.code(500).send({ error: 'Failed to create user' });
