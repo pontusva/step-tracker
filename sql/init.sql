@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users (
   uid VARCHAR(255) PRIMARY KEY,
   name VARCHAR(255),
-  email VARCHAR(255),
+  email VARCHAR(255)
 );
 
 CREATE TABLE steps (
