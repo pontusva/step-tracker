@@ -1,4 +1,10 @@
-import { Text, StyleSheet, View, Pressable } from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  Pressable,
+  ImageBackground,
+} from 'react-native';
 import { useState, useEffect } from 'react';
 import { Pedometer } from 'expo-sensors';
 import { getAuth } from 'firebase/auth';
@@ -59,16 +65,21 @@ export const ProfileScreen = ({ navigation, route }) => {
 
   return (
     <>
-      <View style={styles.container}>
-        <Text style={styles.text}>
-          The last 24 hours you've taken{' '}
-          <Text style={styles.span}>{pastStepCount}</Text> steps
-        </Text>
-        <Text style={styles.text}>Do you want to sync?</Text>
-        <Pressable onPress={syncSteps} style={styles.button}>
-          <Text style={styles.text}>Yes</Text>
-        </Pressable>
-      </View>
+      <ImageBackground
+        source={require('../../assets/homescreen.jpg')}
+        resizeMode="cover"
+        style={styles.image}>
+        <View style={styles.container}>
+          <Text style={styles.text}>
+            The last 24 hours you've taken{' '}
+            <Text style={styles.span}>{pastStepCount}</Text> steps
+          </Text>
+          <Text style={styles.text}>Do you want to sync?</Text>
+          <Pressable onPress={syncSteps} style={styles.button}>
+            <Text style={styles.text}>Yes</Text>
+          </Pressable>
+        </View>
+      </ImageBackground>
     </>
   );
 };
@@ -89,6 +100,10 @@ const styles = StyleSheet.create({
     elevation: 3,
     marginTop: 20,
     backgroundColor: 'black',
+  },
+  image: {
+    flex: 1,
+    justifyContent: 'flex-start',
   },
   text: {
     color: 'white',

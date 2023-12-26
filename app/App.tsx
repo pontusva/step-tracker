@@ -28,7 +28,18 @@ const App = () => {
   }, []);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      theme={{
+        dark: false,
+        colors: {
+          background: '',
+          primary: '#fff',
+          card: '#000',
+          text: '#fff',
+          border: '#000',
+          notification: '#fff',
+        },
+      }}>
       <Tab.Navigator>
         {isAuthenticated ? (
           <>
