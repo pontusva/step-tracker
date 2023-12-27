@@ -1,7 +1,26 @@
 import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
+import { getAuth } from 'firebase/auth';
 
 export const AddFriendModal = ({ modalVisible, setModalVisible, items }) => {
+  const uid = getAuth().currentUser.uid;
+
+  const addFriend = async () => {
+    const response = await fetch('http://192.168.1.237:5000/friend-request', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_uid: uid,
+        friend_uid: items[0].uid,
+        action_user_uid: uid,
+      }),
+    });
+    const result = await response.json();
+    console.log(result);
+  };
+
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -22,7 +41,10 @@ export const AddFriendModal = ({ modalVisible, setModalVisible, items }) => {
                   styles.buttonClose,
                   styles.buttonMarginRight,
                 ]}
-                onPress={() => setModalVisible(!modalVisible)}>
+                onPress={() => {
+                  addFriend();
+                  // setModalVisible(!modalVisible)
+                }}>
                 <Text style={styles.textStyle}>Yes</Text>
               </Pressable>
               <Pressable
