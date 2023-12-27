@@ -35,7 +35,6 @@ export const FriendsScreen = () => {
   return (
     <>
       <View style={styles.container}>
-        {/* {items.length < 1 && <Text>{emptyEmail.error}</Text>} */}
         <View
           style={{
             width: width,
@@ -58,6 +57,9 @@ export const FriendsScreen = () => {
               </Text>
             );
           })}
+        {items.length < 1 && emptyEmail !== null && (
+          <Text>{emptyEmail.error}</Text>
+        )}
       </View>
       <AddFriendModal
         modalVisible={modalVisible}
