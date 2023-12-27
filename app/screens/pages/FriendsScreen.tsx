@@ -18,6 +18,7 @@ export const FriendsScreen = () => {
   const [items, setItems] = useState([]);
   const [friendsList, setFriendsList] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [friendsListToggle, setFriendsListToggle] = useState(true);
   const [acceptFriendModalVisible, setAcceptFriendModalVisible] =
     useState(false);
   const uid = getAuth().currentUser?.uid;
@@ -67,7 +68,11 @@ export const FriendsScreen = () => {
           width: width,
           padding: 10,
         }}>
-        <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Friends</Text>
+        <Text
+          onPress={() => setFriendsListToggle(!friendsListToggle)}
+          style={{ fontSize: 30, fontWeight: 'bold' }}>
+          {friendsListToggle ? 'Add Friends' : 'Friends'}
+        </Text>
 
         <View
           style={{
@@ -86,42 +91,49 @@ export const FriendsScreen = () => {
           />
         </View>
       </View>
-      {items &&
-        items.map(item => {
-          return (
-            <View key={item.value}>
-              <Text
-                onPress={() => setModalVisible(!modalVisible)}
-                style={styles.emailText}>
-                {item.email}
-              </Text>
+      {/* Seperate this ternery into own component */}
+      {friendsListToggle ? (
+        <>
+          <View style={styles.container}>
+            <View
+              style={{
+                width: width,
+              }}>
+              <Searchbar
+                placeholder="Search"
+                onChangeText={onChangeSearch}
+                value={searchQuery}
+              />
             </View>
-          );
-        })}
-      {items.length < 1 && emptyEmail !== null && (
-        <Text>{emptyEmail.error}</Text>
-      )}
-      <View style={styles.container}>
-        <View
-          style={{
-            width: width,
-          }}>
-          <Searchbar
-            placeholder="Search"
-            onChangeText={onChangeSearch}
-            value={searchQuery}
-          />
+            {items &&
+              items.map(item => {
+                return (
+                  <View key={item.value}>
+                    <Text
+                      onPress={() => setModalVisible(!modalVisible)}
+                      style={styles.emailText}>
+                      {item.email}
+                    </Text>
+                  </View>
+                );
+              })}
+            {items.length < 1 && emptyEmail !== null && (
+              <Text>{emptyEmail.error}</Text>
+            )}
+          </View>
+        </>
+      ) : (
+        <View>
+          {friendsList &&
+            friendsList.map((item, index) => {
+              return (
+                <View key={index}>
+                  <Text>{item.friend_name}</Text>
+                </View>
+              );
+            })}
         </View>
-
-        {friendsList &&
-          friendsList.map((item, index) => {
-            return (
-              <View key={index}>
-                <Text>{item.friend_name}</Text>
-              </View>
-            );
-          })}
-      </View>
+      )}
       <AddFriendModal
         items={items}
         modalVisible={modalVisible}
