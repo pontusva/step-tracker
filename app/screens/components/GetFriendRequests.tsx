@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import { getAuth } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-export const GetFriendRequests = () => {
+export const GetFriendRequests = ({ acceptFriendModalVisible }) => {
   const [result, setResult] = useState([]);
   const uid = getAuth().currentUser?.uid;
 
@@ -23,7 +23,7 @@ export const GetFriendRequests = () => {
 
   useEffect(() => {
     getRequests();
-  }, []);
+  }, [acceptFriendModalVisible]);
 
   return (
     <View>

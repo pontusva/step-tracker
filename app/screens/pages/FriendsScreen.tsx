@@ -26,7 +26,6 @@ export const FriendsScreen = () => {
   const [items, setItems] = useState([]);
   const [friendsList, setFriendsList] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [friendsListToggle, setFriendsListToggle] = useState(true);
   const [acceptFriendModalVisible, setAcceptFriendModalVisible] =
     useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
@@ -108,7 +107,9 @@ export const FriendsScreen = () => {
             alignSelf: 'flex-end',
             alignItems: 'center',
           }}>
-          <GetFriendRequests />
+          <GetFriendRequests
+            acceptFriendModalVisible={acceptFriendModalVisible}
+          />
           <Ionicons
             onPress={() =>
               setAcceptFriendModalVisible(!acceptFriendModalVisible)
