@@ -8,9 +8,9 @@ dotenv.config();
 const server = fastify();
 
 server.register(cors);
+server.register(dbConnection);
 server.register(routes);
 server.register(friendRequest);
-server.register(dbConnection);
 server.register(auth);
 
 server.after(async () => {
