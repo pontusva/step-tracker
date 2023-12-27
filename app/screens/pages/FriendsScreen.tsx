@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Text, Dimensions, StyleSheet, View } from 'react-native';
+import { Text, Dimensions, StyleSheet, View, Button } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import { AddFriendModal } from '../components/Modals/AddFriendModal';
 import { GetFriendRequests } from '../components/GetFriendRequests';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { AcceptFriendModal } from '../components/Modals/AcceptFriendModal';
 interface NoEmailFound {
   error: string;
 }
@@ -15,6 +16,9 @@ export const FriendsScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [items, setItems] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [acceptFriendModalVisible, setAcceptFriendModalVisible] =
+    useState(false);
+
   const onChangeSearch = (query: string) => setSearchQuery(query);
 
   useEffect(() => {
@@ -44,6 +48,7 @@ export const FriendsScreen = () => {
           padding: 10,
         }}>
         <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Friends</Text>
+
         <View
           style={{
             flexDirection: 'row',
@@ -51,7 +56,14 @@ export const FriendsScreen = () => {
             alignItems: 'center',
           }}>
           <GetFriendRequests />
-          <Ionicons name="people" size={50} color="black" />
+          <Ionicons
+            onPress={() =>
+              setAcceptFriendModalVisible(!acceptFriendModalVisible)
+            }
+            name="people"
+            size={50}
+            color="black"
+          />
         </View>
       </View>
       <View style={styles.container}>
@@ -85,6 +97,10 @@ export const FriendsScreen = () => {
         items={items}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
+      />
+      <AcceptFriendModal
+        acceptFriendModalVisible={acceptFriendModalVisible}
+        setAcceptFriendModalVisible={setAcceptFriendModalVisible}
       />
     </>
   );

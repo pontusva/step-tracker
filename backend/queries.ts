@@ -19,7 +19,10 @@ export default {
       WHERE user_uid = $2 AND friend_uid = $1 AND status = 'PENDING'
       RETURNING *`,
     checkFriendship: `SELECT * FROM friendships
-      WHERE user_uid = $1 AND friend_uid = $2 AND status = 'ACCEPTED'`,
-    getFriendRequests: `SELECT * FROM friendships WHERE user_uid = $1 AND status = 'PENDING'`,
+                        WHERE user_uid = $1 AND friend_uid = $2 AND status = 'ACCEPTED'`,
+    getFriendRequests: `SELECT f.*, u.name AS friend_name 
+                          FROM friendships f 
+                          JOIN users u ON f.friend_uid = u.uid 
+                          WHERE f.user_uid = $1 AND f.status = 'PENDING'`,
   },
 };
