@@ -20,6 +20,6 @@ export default {
       RETURNING *`,
     checkFriendship: `SELECT * FROM friendships
       WHERE user_uid = $1 AND friend_uid = $2 AND status = 'ACCEPTED'`,
-    getFriendRequests: `SELECT * FROM friendships WHERE friend_uid = $1 AND status = 'PENDING'`,
+    getFriendRequests: `SELECT * FROM friendships WHERE user_uid = $1 AND status = 'PENDING'`,
   },
 };

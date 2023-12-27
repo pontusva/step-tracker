@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Text, Dimensions, StyleSheet, View } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import { AddFriendModal } from '../components/Modals/AddFriendModal';
-
+import { GetFriendRequests } from '../components/GetFriendRequests';
+import Ionicons from '@expo/vector-icons/Ionicons';
 interface NoEmailFound {
   error: string;
 }
@@ -34,11 +35,29 @@ export const FriendsScreen = () => {
 
   return (
     <>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: width,
+          padding: 10,
+        }}>
+        <Text style={{ fontSize: 30, fontWeight: 'bold' }}>Friends</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignSelf: 'flex-end',
+            alignItems: 'center',
+          }}>
+          <GetFriendRequests />
+          <Ionicons name="people" size={50} color="black" />
+        </View>
+      </View>
       <View style={styles.container}>
         <View
           style={{
             width: width,
-            marginBottom: 20,
           }}>
           <Searchbar
             placeholder="Search"
@@ -49,12 +68,13 @@ export const FriendsScreen = () => {
         {items &&
           items.map(item => {
             return (
-              <Text
-                key={item.value}
-                onPress={() => setModalVisible(!modalVisible)}
-                style={styles.emailText}>
-                {item.email}
-              </Text>
+              <View key={item.value}>
+                <Text
+                  onPress={() => setModalVisible(!modalVisible)}
+                  style={styles.emailText}>
+                  {item.email}
+                </Text>
+              </View>
             );
           })}
         {items.length < 1 && emptyEmail !== null && (
@@ -75,7 +95,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   emailText: {
     fontSize: 20,

@@ -12,6 +12,11 @@ interface SyncSteps {
 interface FriendRequest {
   Body: { user_uid: string; friend_uid: string };
 }
+
+interface GetFriendRequest {
+  Body: { uid: string };
+}
+
 export async function routes(fastify: FastifyInstance) {
   fastify.get('/', async () => {
     return { hello: 'world' };
@@ -103,6 +108,31 @@ export async function friendRequest(fastify: FastifyInstance) {
         reply
           .code(500)
           .send({ error: 'An error occurred while fetching emails' });
+      }
+    }
+  );
+
+  fastify.post(
+    '/get-friend-requests',
+    async (request: FastifyRequest<GetFriendRequest>, reply: FastifyReply) => {
+      const { uid } = request.body;
+      try {
+        const result = await fastify.pg.query(
+          queries.friendRequest.getFriendRequests,
+          [uid]
+        );
+
+        if (result.rowCount === 0) {
+          reply.code(404).send({ error: 'No friend requests found' });
+          return;
+        }
+
+        return result.rows;
+      } catch (error) {
+        console.error(error);
+        reply
+          .code(500)
+          .send({ error: 'An error occurred while fetching friend requests' });
       }
     }
   );
