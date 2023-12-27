@@ -167,6 +167,7 @@ export const FriendsScreen = () => {
               borderTopWidth: 2,
             }}>
             {friendsList &&
+              friendsList.length > 0 &&
               friendsList.map((item, index) => {
                 return (
                   <View
