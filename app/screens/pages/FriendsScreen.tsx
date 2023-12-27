@@ -5,6 +5,7 @@ import { AddFriendModal } from '../components/Modals/AddFriendModal';
 import { GetFriendRequests } from '../components/GetFriendRequests';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { AcceptFriendModal } from '../components/Modals/AcceptFriendModal';
+import { getAuth } from 'firebase/auth';
 interface NoEmailFound {
   error: string;
 }
@@ -18,8 +19,23 @@ export const FriendsScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [acceptFriendModalVisible, setAcceptFriendModalVisible] =
     useState(false);
-
+  const uid = getAuth().currentUser?.uid;
   const onChangeSearch = (query: string) => setSearchQuery(query);
+
+  // write a function that post the uid to the backend and reqeusts the friends from /get-friends endpoint
+
+  const getFriends = async () => {
+    const response = await fetch('http://192.168.1.237:5000/get-friends', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ user_uid: uid }),
+    });
+    const result = await response.json();
+
+    console.log(result);
+  };
 
   useEffect(() => {
     if (searchQuery && searchQuery.length > 0) {
@@ -35,6 +51,10 @@ export const FriendsScreen = () => {
     } else {
       setItems([]);
     }
+  }, [searchQuery]);
+
+  useEffect(() => {
+    getFriends();
   }, [searchQuery]);
 
   return (

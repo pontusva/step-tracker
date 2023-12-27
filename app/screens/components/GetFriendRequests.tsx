@@ -17,14 +17,14 @@ export const GetFriendRequests = () => {
       }
     );
     const data = await response.json();
-    console.log(data);
+
     setResult(data);
   };
 
   useEffect(() => {
     getRequests();
   }, []);
-  console.log(result);
+
   return (
     <View>
       <Text

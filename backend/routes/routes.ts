@@ -197,4 +197,36 @@ export async function friendRequest(fastify: FastifyInstance) {
       }
     }
   );
+
+  // Write a get method that accepts a user_uid and returns all friends for that user
+
+  fastify.post(
+    '/get-friends',
+    async (request: FastifyRequest<FriendRequest>, reply: FastifyReply) => {
+      try {
+        const { user_uid } = request.body;
+        if (!user_uid) {
+          reply.code(400).send({ error: 'Missing required fields' });
+          return;
+        }
+
+        const result = await fastify.pg.query(
+          queries.friendRequest.getAllFriends,
+          [user_uid]
+        );
+
+        if (result.rowCount === 0) {
+          reply.code(500).send({ error: 'Failed to get friends' });
+          return;
+        }
+
+        return result.rows;
+      } catch (error) {
+        console.error(error);
+        reply
+          .code(500)
+          .send({ error: 'An error occurred while getting friends' });
+      }
+    }
+  );
 }
