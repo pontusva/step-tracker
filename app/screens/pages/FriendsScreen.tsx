@@ -1,19 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Text, TextInput, StyleSheet } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-
+import { Searchbar } from 'react-native-paper';
 export const FriendsScreen = () => {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [items, setItems] = useState([]);
-  const [search, setSearch] = useState('');
+  const onChangeSearch = query => setSearchQuery(query);
 
   useEffect(() => {
-    if (search && search.length > 0) {
-      // Replace this with your actual database query
-      fetch(`https://your-database-api.com/search?email=${search}`)
+    if (searchQuery && searchQuery.length > 0) {
+      fetch(`http://192.168.1.237:5000/emails?search=${searchQuery}`)
         .then(response => response.json())
         .then(data => {
+          console.log(data);
           const newItems = data.map(user => ({
             label: user.email,
             value: user.uid,
@@ -23,20 +21,14 @@ export const FriendsScreen = () => {
     } else {
       setItems([]);
     }
-  }, [search]);
-
+  }, [searchQuery]);
+  console.log(items);
   return (
     <>
-      <DropDownPicker
-        searchable={true}
-        searchPlaceholder="Search email"
-        onChangeValue={setSearch}
-        open={open}
-        value={value}
-        items={items}
-        setOpen={setOpen}
-        setValue={setValue}
-        setItems={setItems}
+      <Searchbar
+        placeholder="Search"
+        onChangeText={onChangeSearch}
+        value={searchQuery}
       />
     </>
   );

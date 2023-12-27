@@ -88,7 +88,7 @@ export async function friendRequest(fastify: FastifyInstance) {
       console.log(search);
       try {
         const result = await fastify.pg.query(
-          'SELECT email FROM users WHERE email LIKE $1',
+          'SELECT users.email, users.uid FROM users WHERE email LIKE $1',
           [`%${search}%`]
         );
 
@@ -97,7 +97,7 @@ export async function friendRequest(fastify: FastifyInstance) {
           return;
         }
 
-        return result.rows.map((row: any) => row.email);
+        return result.rows[0];
       } catch (error) {
         console.error(error);
         reply
