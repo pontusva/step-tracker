@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
 
-export const AddFriendModal = ({ modalVisible, setModalVisible }) => {
+export const AddFriendModal = ({ modalVisible, setModalVisible, items }) => {
   return (
     <View style={styles.centeredView}>
       <Modal

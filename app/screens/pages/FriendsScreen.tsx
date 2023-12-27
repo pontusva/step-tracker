@@ -62,6 +62,7 @@ export const FriendsScreen = () => {
         )}
       </View>
       <AddFriendModal
+        items={items}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />
