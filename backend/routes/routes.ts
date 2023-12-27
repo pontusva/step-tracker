@@ -81,6 +81,32 @@ export async function auth(fastify: FastifyInstance) {
 }
 
 export async function friendRequest(fastify: FastifyInstance) {
+  fastify.get(
+    '/emails',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { search } = request.query as { search: string };
+      console.log(search);
+      try {
+        const result = await fastify.pg.query(
+          'SELECT email FROM users WHERE email LIKE $1',
+          [`%${search}%`]
+        );
+
+        if (result.rowCount === 0) {
+          reply.code(404).send({ error: 'No emails found' });
+          return;
+        }
+
+        return result.rows.map((row: any) => row.email);
+      } catch (error) {
+        console.error(error);
+        reply
+          .code(500)
+          .send({ error: 'An error occurred while fetching emails' });
+      }
+    }
+  );
+
   fastify.post(
     '/friend-request',
     async (request: FastifyRequest<FriendRequest>, reply: FastifyReply) => {
