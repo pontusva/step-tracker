@@ -16,6 +16,7 @@ export const FriendsScreen = () => {
   const [emptyEmail, setEmptyEmail] = useState<NoEmailFound | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [items, setItems] = useState([]);
+  const [friendsList, setFriendsList] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [acceptFriendModalVisible, setAcceptFriendModalVisible] =
     useState(false);
@@ -33,8 +34,7 @@ export const FriendsScreen = () => {
       body: JSON.stringify({ user_uid: uid }),
     });
     const result = await response.json();
-
-    console.log(result);
+    setFriendsList(result);
   };
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export const FriendsScreen = () => {
 
   useEffect(() => {
     getFriends();
-  }, [searchQuery]);
+  }, []);
 
   return (
     <>
@@ -86,6 +86,21 @@ export const FriendsScreen = () => {
           />
         </View>
       </View>
+      {items &&
+        items.map(item => {
+          return (
+            <View key={item.value}>
+              <Text
+                onPress={() => setModalVisible(!modalVisible)}
+                style={styles.emailText}>
+                {item.email}
+              </Text>
+            </View>
+          );
+        })}
+      {items.length < 1 && emptyEmail !== null && (
+        <Text>{emptyEmail.error}</Text>
+      )}
       <View style={styles.container}>
         <View
           style={{
@@ -97,21 +112,15 @@ export const FriendsScreen = () => {
             value={searchQuery}
           />
         </View>
-        {items &&
-          items.map(item => {
+
+        {friendsList &&
+          friendsList.map((item, index) => {
             return (
-              <View key={item.value}>
-                <Text
-                  onPress={() => setModalVisible(!modalVisible)}
-                  style={styles.emailText}>
-                  {item.email}
-                </Text>
+              <View key={index}>
+                <Text>{item.friend_name}</Text>
               </View>
             );
           })}
-        {items.length < 1 && emptyEmail !== null && (
-          <Text>{emptyEmail.error}</Text>
-        )}
       </View>
       <AddFriendModal
         items={items}
