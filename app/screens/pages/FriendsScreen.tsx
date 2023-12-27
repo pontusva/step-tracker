@@ -72,17 +72,20 @@ export const FriendsScreen = () => {
           padding: 10,
         }}>
         <View>
-          <Text style={{ fontSize: 30, fontWeight: 'bold' }}>
-            {isEnabled ? 'Add Friends' : 'Friends'}
-          </Text>
           <Switch
-            trackColor={{ false: '#767577', true: '#81b0ff' }}
-            thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+            trackColor={{ false: '#767577', true: '#474647' }}
+            thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleSwitch}
             value={isEnabled}
           />
         </View>
+        <View>
+          <Text style={{ fontSize: 30, fontWeight: 'bold' }}>
+            {isEnabled ? 'Add Friends' : 'Friends'}
+          </Text>
+        </View>
+
         <View
           style={{
             flexDirection: 'row',
@@ -135,15 +138,41 @@ export const FriendsScreen = () => {
         <View
           style={{
             width: width,
+            flex: 1,
+
             alignItems: 'center',
             justifyContent: 'center',
-            height: height - 500,
+            marginTop: 20,
+            borderTopWidth: 2,
           }}>
           {friendsList &&
             friendsList.map((item, index) => {
               return (
-                <View key={index}>
-                  <Text>{item.friend_name}</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: width,
+                    padding: 10,
+                  }}
+                  key={index}>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      fontWeight: 'bold',
+                      marginTop: 10,
+                    }}>
+                    {item.friend_name}
+                  </Text>
+                  <Ionicons
+                    style={{
+                      marginTop: 10,
+                    }}
+                    name="git-compare-sharp"
+                    size={30}
+                    color="black"
+                  />
                 </View>
               );
             })}
