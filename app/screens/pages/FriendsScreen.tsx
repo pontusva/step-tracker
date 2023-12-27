@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Text, Dimensions, StyleSheet, View, Button } from 'react-native';
+import { Text, Dimensions, Switch, StyleSheet, View } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import { AddFriendModal } from '../components/Modals/AddFriendModal';
 import { GetFriendRequests } from '../components/GetFriendRequests';
@@ -21,6 +21,9 @@ export const FriendsScreen = () => {
   const [friendsListToggle, setFriendsListToggle] = useState(true);
   const [acceptFriendModalVisible, setAcceptFriendModalVisible] =
     useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
   const uid = getAuth().currentUser?.uid;
   const onChangeSearch = (query: string) => setSearchQuery(query);
 
@@ -68,12 +71,18 @@ export const FriendsScreen = () => {
           width: width,
           padding: 10,
         }}>
-        <Text
-          onPress={() => setFriendsListToggle(!friendsListToggle)}
-          style={{ fontSize: 30, fontWeight: 'bold' }}>
-          {friendsListToggle ? 'Add Friends' : 'Friends'}
-        </Text>
-
+        <View>
+          <Text style={{ fontSize: 30, fontWeight: 'bold' }}>
+            {isEnabled ? 'Add Friends' : 'Friends'}
+          </Text>
+          <Switch
+            trackColor={{ false: '#767577', true: '#81b0ff' }}
+            thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+          />
+        </View>
         <View
           style={{
             flexDirection: 'row',
@@ -92,7 +101,7 @@ export const FriendsScreen = () => {
         </View>
       </View>
       {/* Seperate this ternery into own component */}
-      {friendsListToggle ? (
+      {isEnabled ? (
         <>
           <View style={styles.container}>
             <View
@@ -123,7 +132,13 @@ export const FriendsScreen = () => {
           </View>
         </>
       ) : (
-        <View>
+        <View
+          style={{
+            width: width,
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: height - 500,
+          }}>
           {friendsList &&
             friendsList.map((item, index) => {
               return (
