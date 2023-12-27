@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
 
-export const AddFriendModal = () => {
-  const [modalVisible, setModalVisible] = useState(false);
+export const AddFriendModal = ({ modalVisible, setModalVisible }) => {
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -15,20 +14,26 @@ export const AddFriendModal = () => {
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
+            <Text style={styles.modalText}>Add friend?</Text>
+            <View style={styles.modalButtons}>
+              <Pressable
+                style={[
+                  styles.button,
+                  styles.buttonClose,
+                  styles.buttonMarginRight,
+                ]}
+                onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>Yes</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>No</Text>
+              </Pressable>
+            </View>
           </View>
         </View>
       </Modal>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}>
-        <Text style={styles.textStyle}>Show Modal</Text>
-      </Pressable>
     </View>
   );
 };
@@ -55,10 +60,18 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  modalButtons: {
+    flexDirection: 'row',
+  },
   button: {
-    borderRadius: 20,
     padding: 10,
     elevation: 2,
+  },
+  buttonMarginLeft: {
+    marginLeft: 10,
+  },
+  buttonMarginRight: {
+    marginRight: 10,
   },
   buttonOpen: {
     backgroundColor: '#F194FF',

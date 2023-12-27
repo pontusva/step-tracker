@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Text, Dimensions, StyleSheet, View } from 'react-native';
 import { Searchbar } from 'react-native-paper';
+import { AddFriendModal } from '../components/Modals/AddFriendModal';
 
 interface NoEmailFound {
   error: string;
@@ -12,6 +13,7 @@ export const FriendsScreen = () => {
   const [emptyEmail, setEmptyEmail] = useState<NoEmailFound | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [items, setItems] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
   const onChangeSearch = (query: string) => setSearchQuery(query);
 
   useEffect(() => {
@@ -33,7 +35,7 @@ export const FriendsScreen = () => {
   return (
     <>
       <View style={styles.container}>
-        {items.length < 1 && <Text>{emptyEmail.error}</Text>}
+        {/* {items.length < 1 && <Text>{emptyEmail.error}</Text>} */}
         <View
           style={{
             width: width,
@@ -48,12 +50,19 @@ export const FriendsScreen = () => {
         {items &&
           items.map(item => {
             return (
-              <Text key={item.value} style={styles.emailText}>
+              <Text
+                key={item.value}
+                onPress={() => setModalVisible(!modalVisible)}
+                style={styles.emailText}>
                 {item.email}
               </Text>
             );
           })}
       </View>
+      <AddFriendModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </>
   );
 };
