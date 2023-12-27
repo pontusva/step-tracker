@@ -30,8 +30,9 @@ export const GetFriendRequests = () => {
       <Text
         style={{
           color: 'red',
-        }}
-        onPress={getRequests}>
+          fontSize: 20,
+          fontWeight: 'bold',
+        }}>
         {result && result.length}
       </Text>
     </View>
