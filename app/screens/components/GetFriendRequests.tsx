@@ -33,7 +33,7 @@ export const GetFriendRequests = () => {
           fontSize: 20,
           fontWeight: 'bold',
         }}>
-        {result && result.length}
+        {result.length > 0 ? result.length : 0}
       </Text>
     </View>
   );

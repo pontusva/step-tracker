@@ -1,5 +1,13 @@
-import { useState, useEffect } from 'react';
-import { Text, Dimensions, Switch, StyleSheet, View } from 'react-native';
+import { useState, useEffect, useCallback } from 'react';
+import {
+  Text,
+  Dimensions,
+  Switch,
+  StyleSheet,
+  View,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import { AddFriendModal } from '../components/Modals/AddFriendModal';
 import { GetFriendRequests } from '../components/GetFriendRequests';
@@ -26,8 +34,15 @@ export const FriendsScreen = () => {
 
   const uid = getAuth().currentUser?.uid;
   const onChangeSearch = (query: string) => setSearchQuery(query);
+  const [refreshing, setRefreshing] = useState(false);
 
-  // write a function that post the uid to the backend and reqeusts the friends from /get-friends endpoint
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getFriends();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1500);
+  }, []);
 
   const getFriends = async () => {
     const response = await fetch('http://192.168.1.237:5000/get-friends', {
@@ -38,6 +53,7 @@ export const FriendsScreen = () => {
       body: JSON.stringify({ user_uid: uid }),
     });
     const result = await response.json();
+    console.log(result);
     setFriendsList(result);
   };
 
@@ -135,48 +151,53 @@ export const FriendsScreen = () => {
           </View>
         </>
       ) : (
-        <View
-          style={{
-            width: width,
-            flex: 1,
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }>
+          <View
+            style={{
+              width: width,
+              flex: 1,
 
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 20,
-            borderTopWidth: 2,
-          }}>
-          {friendsList &&
-            friendsList.map((item, index) => {
-              return (
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: width,
-                    padding: 10,
-                  }}
-                  key={index}>
-                  <Text
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 20,
+              borderTopWidth: 2,
+            }}>
+            {friendsList &&
+              friendsList.map((item, index) => {
+                return (
+                  <View
                     style={{
-                      fontSize: 20,
-                      fontWeight: 'bold',
-                      marginTop: 10,
-                    }}>
-                    {item.friend_name}
-                  </Text>
-                  <Ionicons
-                    style={{
-                      marginTop: 10,
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: width,
+                      padding: 10,
                     }}
-                    name="git-compare-sharp"
-                    size={30}
-                    color="black"
-                  />
-                </View>
-              );
-            })}
-        </View>
+                    key={index}>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        fontWeight: 'bold',
+                        marginTop: 10,
+                      }}>
+                      {item.friend_name}
+                    </Text>
+                    <Ionicons
+                      style={{
+                        marginTop: 10,
+                      }}
+                      name="git-compare-sharp"
+                      size={30}
+                      color="black"
+                    />
+                  </View>
+                );
+              })}
+          </View>
+        </ScrollView>
       )}
       <AddFriendModal
         items={items}
