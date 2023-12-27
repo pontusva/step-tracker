@@ -166,4 +166,35 @@ export async function friendRequest(fastify: FastifyInstance) {
       }
     }
   );
+
+  // Write a post method that accepts a user_uid and friend_uid and updates the friendship status to 'ACCEPTED'
+  fastify.post(
+    '/accept-friend-request',
+    async (request: FastifyRequest<FriendRequest>, reply: FastifyReply) => {
+      try {
+        const { user_uid, friend_uid } = request.body;
+        if (!user_uid || !friend_uid) {
+          reply.code(400).send({ error: 'Missing required fields' });
+          return;
+        }
+
+        const result = await fastify.pg.query(
+          queries.friendRequest.acceptRequest,
+          [user_uid, friend_uid]
+        );
+
+        if (result.rowCount === 0) {
+          reply.code(500).send({ error: 'Failed to accept friend request' });
+          return;
+        }
+
+        return result.rows[0];
+      } catch (error) {
+        console.error(error);
+        reply
+          .code(500)
+          .send({ error: 'An error occurred while accepting request' });
+      }
+    }
+  );
 }

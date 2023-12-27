@@ -8,6 +8,7 @@ export const AcceptFriendModal = ({
 }) => {
   const uid = getAuth().currentUser.uid;
   const [result, setResult] = useState([]);
+  const [friendUid, setFriendUid] = useState<number | null>(null);
 
   const getRequests = async () => {
     const response = await fetch(
@@ -25,26 +26,35 @@ export const AcceptFriendModal = ({
     setResult(data);
   };
 
-  const addFriend = async () => {
-    const response = await fetch('http://192.168.1.237:5000/friend-request', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user_uid: uid,
-        action_user_uid: uid,
-      }),
-    });
+  const setFriendUidFunc = (uid: number) => {
+    setFriendUid(uid);
+  };
+
+  const addFriend = async (uid: number) => {
+    setFriendUidFunc(uid);
+    console.log({ friendUid });
+    const response = await fetch(
+      'http://192.168.1.237:5000/accept-friend-request',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_uid: uid,
+          friend_uid: friendUid,
+          action_user_uid: uid,
+        }),
+      }
+    );
     const result = await response.json();
     console.log(result);
   };
 
   useEffect(() => {
     getRequests();
-  }, []);
+  }, [result]);
 
-  console.log(result.map(item => item.friend_uid));
   return (
     <View style={styles.centeredView}>
       <Modal
@@ -57,36 +67,47 @@ export const AcceptFriendModal = ({
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() =>
+                setAcceptFriendModalVisible(!acceptFriendModalVisible)
+              }>
+              <Text style={styles.textStyle}>X</Text>
+            </Pressable>
             <Text style={styles.modalText}>Friend Requests</Text>
+
             <View>
-              {result.map((item, index) => {
-                return (
-                  <View key={index}>
-                    <Text>add user: {item.friend_name}</Text>
-                    <View style={styles.modalButtons}>
-                      <Pressable
-                        style={[
-                          styles.button,
-                          styles.buttonClose,
-                          styles.buttonMarginRight,
-                        ]}
-                        onPress={() => {
-                          // addFriend();
-                          // setModalVisible(!modalVisible)
-                        }}>
-                        <Text style={styles.textStyle}>Yes</Text>
-                      </Pressable>
-                      <Pressable
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={() =>
-                          setAcceptFriendModalVisible(!acceptFriendModalVisible)
-                        }>
-                        <Text style={styles.textStyle}>No</Text>
-                      </Pressable>
+              {result.length > 0 &&
+                result.map((item, index) => {
+                  return (
+                    <View key={index}>
+                      <Text>add user: {item.friend_name}</Text>
+                      <View style={styles.modalButtons}>
+                        <Pressable
+                          style={[
+                            styles.button,
+                            styles.buttonClose,
+                            styles.buttonMarginRight,
+                          ]}
+                          onPress={() => {
+                            addFriend(item.friend_uid);
+                            // setModalVisible(!modalVisible)
+                          }}>
+                          <Text style={styles.textStyle}>Yes</Text>
+                        </Pressable>
+                        <Pressable
+                          style={[styles.button, styles.buttonClose]}
+                          onPress={() =>
+                            setAcceptFriendModalVisible(
+                              !acceptFriendModalVisible
+                            )
+                          }>
+                          <Text style={styles.textStyle}>No</Text>
+                        </Pressable>
+                      </View>
                     </View>
-                  </View>
-                );
-              })}
+                  );
+                })}
             </View>
           </View>
         </View>
