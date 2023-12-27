@@ -56,7 +56,6 @@ export async function auth(fastify: FastifyInstance) {
     async (request: FastifyRequest<SignUp>, reply: FastifyReply) => {
       try {
         const { uid, name, email } = request.body;
-        console.log(uid, name);
 
         if (!uid || !name) {
           reply.code(400).send({ error: 'Missing required fields' });
@@ -90,7 +89,7 @@ export async function friendRequest(fastify: FastifyInstance) {
     '/emails',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { search } = request.query as { search: string };
-      console.log(search);
+
       try {
         const result = await fastify.pg.query(
           'SELECT users.email, users.uid FROM users WHERE email LIKE $1',
