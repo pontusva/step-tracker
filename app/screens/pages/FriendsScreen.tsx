@@ -9,7 +9,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import { Searchbar } from 'react-native-paper';
-import { AddFriendModal } from '../components/Modals/AddFriendModal';
+import { SendFriendRequst } from '../components/Modals/SendFriendRequst';
 import { GetFriendRequests } from '../components/GetFriendRequests';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { AcceptFriendModal } from '../components/Modals/AcceptFriendModal';
@@ -202,7 +202,7 @@ export const FriendsScreen = () => {
           </View>
         </ScrollView>
       )}
-      <AddFriendModal
+      <SendFriendRequst
         items={items}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}

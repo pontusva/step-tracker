@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
 import { getAuth } from 'firebase/auth';
 
-export const AddFriendModal = ({ modalVisible, setModalVisible, items }) => {
+export const SendFriendRequst = ({ modalVisible, setModalVisible, items }) => {
   const uid = getAuth().currentUser.uid;
 
   const addFriend = async () => {
