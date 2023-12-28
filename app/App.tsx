@@ -11,9 +11,10 @@ import SignInScreen from './screens/pages/SignInScreen';
 import SignUpScreen from './screens/pages/SignUpScreen';
 import { FriendsScreen } from './screens/pages/FriendsScreen';
 import CompareWithFriend from './screens/pages/CompareWithFriend';
+import { auth } from './firebase.config';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-
+auth;
 function TabNavigator() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
