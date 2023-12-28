@@ -2,6 +2,7 @@ import { ImageBackground, StyleSheet, Text } from 'react-native';
 import { getAuth } from 'firebase/auth';
 import { useEffect } from 'react';
 import StepCounter from '../components/StepCounter';
+
 export const HomeScreen = ({ navigation }) => {
   const auth = getAuth().currentUser;
   console.log(auth.displayName);

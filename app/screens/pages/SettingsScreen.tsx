@@ -8,6 +8,7 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
+  SafeAreaView,
 } from 'react-native';
 import {
   getAuth,
@@ -89,46 +90,47 @@ export const SettingsScreen = () => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}>
-        <View>
-          <TextInput
-            style={styles.input}
-            value={name}
-            onChangeText={setName}
-            placeholder="New Name"
-          />
-          <Button title="Update Name" onPress={updateName} />
-          <TextInput
-            style={styles.input}
-            value={password}
-            onChangeText={setPassword}
-            placeholder="New Password"
-            secureTextEntry
-          />
-          <Button title="Update Password" onPress={updatePasswordFunc} />
-
-          <TextInput
-            style={styles.input}
-            value={passwordDelete}
-            onChangeText={setPasswordDelete}
-            placeholder="Current Password"
-            secureTextEntry
-          />
-          <Button title="Delete Account" onPress={deleteAccount} />
-          <Button title="log out" onPress={logout} />
-        </View>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}>
+      <SafeAreaView>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View>
+            <TextInput
+              style={styles.input}
+              value={name}
+              onChangeText={setName}
+              placeholder="New Name"
+            />
+            <Button title="Update Name" onPress={updateName} />
+            <TextInput
+              style={styles.input}
+              value={password}
+              onChangeText={setPassword}
+              placeholder="New Password"
+              secureTextEntry
+            />
+            <Button title="Update Password" onPress={updatePasswordFunc} />
+            <TextInput
+              style={styles.input}
+              value={passwordDelete}
+              onChangeText={setPasswordDelete}
+              placeholder="Current Password"
+              secureTextEntry
+            />
+            <Button title="Delete Account" onPress={deleteAccount} />
+            <Button title="log out" onPress={logout} />
+          </View>
+        </TouchableWithoutFeedback>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   input: {
     height: 40,
-    margin: 12,
+    margin: 20,
     borderWidth: 1,
   },
   container: {

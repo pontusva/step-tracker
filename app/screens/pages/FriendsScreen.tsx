@@ -9,6 +9,7 @@ import {
   View,
   ScrollView,
   RefreshControl,
+  SafeAreaView,
 } from 'react-native';
 import { Button, Searchbar } from 'react-native-paper';
 import { SendFriendRequst } from '../components/Modals/SendFriendRequst';
@@ -20,7 +21,7 @@ import { getAuth } from 'firebase/auth';
 const width = Dimensions.get('window').width; //full width
 const height = Dimensions.get('window').height; //full height
 
-export const FriendsScreen = () => {
+export const FriendsScreen = ({ navigation }) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [emailOfSearchedUser, setEmailOfSearchedUser] = useState([]);
@@ -89,7 +90,7 @@ export const FriendsScreen = () => {
   }, [acceptFriendModalVisible]);
 
   return (
-    <>
+    <SafeAreaView>
       <View
         style={{
           flexDirection: 'row',
@@ -170,9 +171,13 @@ export const FriendsScreen = () => {
                     borderBottomColor: 'lightgray',
                     width: width,
                   }}>
-                  <Text onPress={() => setFriendId(friends.uid)}>
+                  <Button
+                    onPress={async () => {
+                      await setFriendId(friends.uid);
+                      // navigation.navigate('HiddenScreen');
+                    }}>
                     {friends.email}
-                  </Text>
+                  </Button>
                 </View>
               );
             })}
@@ -183,6 +188,6 @@ export const FriendsScreen = () => {
         acceptFriendModalVisible={acceptFriendModalVisible}
         setAcceptFriendModalVisible={setAcceptFriendModalVisible}
       />
-    </>
+    </SafeAreaView>
   );
 };

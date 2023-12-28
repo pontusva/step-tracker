@@ -1,9 +1,12 @@
-import { View, Text } from 'react-native';
+import { View, Text, SafeAreaView, Button } from 'react-native';
 
-export default function CompareWithFriend() {
+export default function CompareWithFriend({ navigation }) {
   return (
-    <View>
-      <Text>Compare with friend</Text>
-    </View>
+    <SafeAreaView>
+      <View>
+        <Text>Compare with friend</Text>
+        <Button title="Go back" onPress={() => navigation.goBack()} />
+      </View>
+    </SafeAreaView>
   );
 }

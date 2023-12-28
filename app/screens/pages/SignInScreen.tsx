@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, TextInput } from 'react-native';
+import { Button, TextInput, SafeAreaView } from 'react-native';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const SignInScreen = () => {
@@ -23,7 +23,7 @@ const SignInScreen = () => {
   };
 
   return (
-    <>
+    <SafeAreaView>
       <TextInput
         value={email}
         onChangeText={setEmail}
@@ -37,7 +37,7 @@ const SignInScreen = () => {
         secureTextEntry
       />
       <Button title="Sign In" onPress={signIn} />
-    </>
+    </SafeAreaView>
   );
 };
 
