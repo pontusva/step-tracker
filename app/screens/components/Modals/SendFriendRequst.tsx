@@ -8,7 +8,7 @@ export const SendFriendRequst = ({
   friendUId,
 }) => {
   const uid = getAuth().currentUser.uid;
-
+  console.log({ uid, friendUId });
   const addFriend = async () => {
     const response = await fetch('http://192.168.1.237:5000/friend-request', {
       method: 'POST',

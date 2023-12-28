@@ -8,7 +8,7 @@ import {
   ScrollView,
   RefreshControl,
 } from 'react-native';
-import { Searchbar } from 'react-native-paper';
+import { Button, Searchbar } from 'react-native-paper';
 import { SendFriendRequst } from '../components/Modals/SendFriendRequst';
 import { GetFriendRequests } from '../components/GetFriendRequests';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -140,14 +140,14 @@ export const FriendsScreen = () => {
               items.map(item => {
                 return (
                   <View key={item.value}>
-                    <Text
+                    <Button
                       onPress={() => {
+                        console.log(item);
                         setFriendUId(item.friend_uid);
                         setModalVisible(!modalVisible);
-                      }}
-                      style={styles.emailText}>
+                      }}>
                       {item.email}
-                    </Text>
+                    </Button>
                   </View>
                 );
               })}
