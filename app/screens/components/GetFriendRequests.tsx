@@ -6,6 +6,7 @@ export const GetFriendRequests = ({ acceptFriendModalVisible }) => {
   const uid = getAuth().currentUser?.uid;
 
   const getRequests = async () => {
+    console.log({ uid });
     try {
       const response = await fetch(
         'http://192.168.1.237:5000/get-friend-requests',
