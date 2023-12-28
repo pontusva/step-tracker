@@ -226,7 +226,7 @@ export async function compareWithFriends(fastify: FastifyInstance) {
     async (request: FastifyRequest, reply: FastifyReply) => {
       try {
         const { userId } = request.query as { userId: string };
-
+        console.log(userId);
         if (!userId) {
           reply.code(400).send({ error: 'Missing required fields' });
           return;
