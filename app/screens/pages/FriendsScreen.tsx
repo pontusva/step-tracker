@@ -143,7 +143,7 @@ export const FriendsScreen = () => {
                     <Button
                       onPress={() => {
                         console.log(item);
-                        setFriendUId(item.friend_uid);
+                        setFriendUId(item.uid);
                         setModalVisible(!modalVisible);
                       }}>
                       {item.email}
