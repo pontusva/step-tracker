@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useFriendStore } from '../../zustand/hooks';
+import { Link } from '@react-navigation/native';
 import {
   Text,
   Dimensions,
@@ -14,9 +16,7 @@ import { GetFriendRequests } from '../components/GetFriendRequests';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { AcceptFriendModal } from '../components/Modals/AcceptFriendModal';
 import { getAuth } from 'firebase/auth';
-interface NoEmailFound {
-  error: string;
-}
+
 const width = Dimensions.get('window').width; //full width
 const height = Dimensions.get('window').height; //full height
 
@@ -31,6 +31,10 @@ export const FriendsScreen = () => {
   const onChangeSearch = query => setSearchQuery(query);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
+  const getFriendId = useFriendStore((state: any) => state.friendId);
+  const setFriendId = useFriendStore((state: any) => state.setFriendId);
+
+  console.log(getFriendId);
   const searchByEmail = async () => {
     const response = await fetch(
       `http://192.168.1.237:5000/search-user?searchParam=${searchQuery}`
@@ -166,7 +170,9 @@ export const FriendsScreen = () => {
                     borderBottomColor: 'lightgray',
                     width: width,
                   }}>
-                  <Text>{friends.email}</Text>
+                  <Text onPress={() => setFriendId(friends.uid)}>
+                    {friends.email}
+                  </Text>
                 </View>
               );
             })}
