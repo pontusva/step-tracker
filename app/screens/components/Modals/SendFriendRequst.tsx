@@ -18,7 +18,6 @@ export const SendFriendRequst = ({
       body: JSON.stringify({
         user_uid: uid,
         friend_uid: friendUId,
-        action_user_uid: uid,
       }),
     });
     const result = await response.json();

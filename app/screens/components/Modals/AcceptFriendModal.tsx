@@ -11,19 +11,23 @@ export const AcceptFriendModal = ({
   const [friendUid, setFriendUid] = useState<number | null>(null);
 
   const getRequests = async () => {
-    const response = await fetch(
-      'http://192.168.1.237:5000/get-friend-requests',
-      {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ uid }),
-      }
-    );
-    const data = await response.json();
+    try {
+      const response = await fetch(
+        'http://192.168.1.237:5000/get-friend-requests',
+        {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ uid }),
+        }
+      );
+      const data = await response.json();
 
-    setResult(data);
+      setResult(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const setFriendUidFunc = (uid: number) => {
@@ -42,8 +46,8 @@ export const AcceptFriendModal = ({
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            user_uid: uid,
-            friend_uid: friendUid,
+            user_uid: friendUid,
+            friend_uid: uid,
             action_user_uid: uid,
           }),
         }

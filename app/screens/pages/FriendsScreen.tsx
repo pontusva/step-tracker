@@ -45,16 +45,20 @@ export const FriendsScreen = () => {
   }, []);
 
   const getFriends = async () => {
-    const response = await fetch('http://192.168.1.237:5000/get-friends', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ user_uid: uid }),
-    });
-    const result = await response.json();
-    console.log(result);
-    setFriendsList(result);
+    try {
+      const response = await fetch('http://192.168.1.237:5000/get-friends', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_uid: uid }),
+      });
+      const result = await response.json();
+      console.log(result);
+      setFriendsList(result);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
