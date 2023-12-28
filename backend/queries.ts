@@ -18,9 +18,18 @@ export default {
     FROM friendships
     JOIN users ON friendships.user_uid = users.uid
     WHERE friendships.friend_uid = $1 AND friendships.status = 'PENDING';`,
-    acceptFriendRequest: `UPDATE friendships 
-    SET status = 'ACCEPTED', action_user_uid = $1 
-    WHERE user_uid = $2 AND friend_uid = $1;`,
+    acceptFriendRequest: `  WITH updated AS (
+      UPDATE friendships 
+      SET status = 'ACCEPTED', action_user_uid = $1 
+      WHERE user_uid = $2 AND friend_uid = $1
+      RETURNING *
+    )
+    INSERT INTO friendships (user_uid, friend_uid, status, action_user_uid)
+    SELECT $1, $2, 'ACCEPTED', $1
+    WHERE NOT EXISTS (
+      SELECT 1 FROM friendships WHERE user_uid = $1 AND friend_uid = $2
+    )
+    RETURNING *;`,
     getAcceptedFriendRequests: `SELECT users.*, friendships.*
     FROM friendships
     JOIN users ON friendships.user_uid = users.uid
