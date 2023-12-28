@@ -26,6 +26,7 @@ export const FriendsScreen = () => {
   const [items, setItems] = useState([]);
   const [friendsList, setFriendsList] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [friendUId, setFriendUId] = useState('');
   const [acceptFriendModalVisible, setAcceptFriendModalVisible] =
     useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
@@ -140,7 +141,10 @@ export const FriendsScreen = () => {
                 return (
                   <View key={item.value}>
                     <Text
-                      onPress={() => setModalVisible(!modalVisible)}
+                      onPress={() => {
+                        setFriendUId(item.friend_uid);
+                        setModalVisible(!modalVisible);
+                      }}
                       style={styles.emailText}>
                       {item.email}
                     </Text>
@@ -203,7 +207,7 @@ export const FriendsScreen = () => {
         </ScrollView>
       )}
       <SendFriendRequst
-        items={items}
+        friendUId={friendUId}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
       />

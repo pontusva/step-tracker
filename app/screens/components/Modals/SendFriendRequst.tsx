@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
 import { getAuth } from 'firebase/auth';
 
-export const SendFriendRequst = ({ modalVisible, setModalVisible, items }) => {
+export const SendFriendRequst = ({
+  modalVisible,
+  setModalVisible,
+  friendUId,
+}) => {
   const uid = getAuth().currentUser.uid;
 
   const addFriend = async () => {
@@ -13,7 +17,7 @@ export const SendFriendRequst = ({ modalVisible, setModalVisible, items }) => {
       },
       body: JSON.stringify({
         user_uid: uid,
-        friend_uid: items[0].uid,
+        friend_uid: friendUId,
         action_user_uid: uid,
       }),
     });
