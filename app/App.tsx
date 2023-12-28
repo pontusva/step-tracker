@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { HomeScreen } from './screens/pages/HomeScreen';
@@ -9,13 +10,19 @@ import { SettingsScreen } from './screens/pages/SettingsScreen';
 import SignInScreen from './screens/pages/SignInScreen';
 import SignUpScreen from './screens/pages/SignUpScreen';
 import { FriendsScreen } from './screens/pages/FriendsScreen';
-import { auth } from './firebase.config';
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+function HomeStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={HomeScreen} />
+    </Stack.Navigator>
+  );
+}
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const user = auth.currentUser;
 
   useEffect(() => {
     const auth = getAuth();
