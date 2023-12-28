@@ -6,13 +6,12 @@ export const GetFriendRequests = ({ acceptFriendModalVisible }) => {
   const uid = getAuth().currentUser?.uid;
 
   const getRequests = async () => {
-    console.log({ uid });
     try {
       const response = await fetch(
         `http://192.168.1.237:5000/pending-friend-requests?userId=${uid}`
       );
       const data = await response.json();
-      console.log({ data });
+
       setResult(data);
     } catch (error) {
       console.log(error);

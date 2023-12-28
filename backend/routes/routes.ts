@@ -194,4 +194,28 @@ export async function auth(fastify: FastifyInstance) {
       }
     }
   );
+
+  fastify.get(
+    '/accepted-friend-requests/:userId',
+    async (
+      request: FastifyRequest<{ Params: { userId: string } }>,
+      reply: FastifyReply
+    ) => {
+      try {
+        const { userId } = request.params;
+
+        const { rows } = await fastify.pg.query(
+          queries.friendRequests.getAcceptedFriendRequests,
+          [userId]
+        );
+
+        reply.code(200).send(rows);
+      } catch (error) {
+        console.error(error);
+        reply.code(500).send({
+          error: 'An error occurred while fetching accepted friend requests',
+        });
+      }
+    }
+  );
 }

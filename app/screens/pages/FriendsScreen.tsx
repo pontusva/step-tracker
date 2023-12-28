@@ -27,6 +27,7 @@ export const FriendsScreen = () => {
   const [acceptFriendModalVisible, setAcceptFriendModalVisible] =
     useState(false);
   const [getFriendRequests, setGetFriendRequests] = useState([]);
+  const [acceptedFriendRequests, setAcceptedFriendRequests] = useState([]);
   const onChangeSearch = query => setSearchQuery(query);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
@@ -58,8 +59,29 @@ export const FriendsScreen = () => {
     }
   };
 
+  const fetchAcceptedFriendRequests = async () => {
+    try {
+      const response = await fetch(
+        `http://192.168.1.237:5000/accepted-friend-requests/${
+          getAuth().currentUser.uid
+        }`
+      );
+      const data = await response.json();
+      console.log(data);
+      setAcceptedFriendRequests(data);
+      if (!response.ok) {
+        throw new Error(data.error);
+      }
+
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getRequests();
+    fetchAcceptedFriendRequests();
   }, [acceptFriendModalVisible]);
 
   return (
@@ -129,7 +151,26 @@ export const FriendsScreen = () => {
             })}
         </View>
       ) : (
-        <Text>Friends</Text>
+        <View>
+          {acceptedFriendRequests &&
+            acceptedFriendRequests.map(friends => {
+              return (
+                <View
+                  key={friends.uid}
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: 10,
+                    borderBottomWidth: 1,
+                    borderBottomColor: 'lightgray',
+                    width: width,
+                  }}>
+                  <Text>{friends.email}</Text>
+                </View>
+              );
+            })}
+        </View>
       )}
       <AcceptFriendModal
         getFriendRequests={getFriendRequests}
