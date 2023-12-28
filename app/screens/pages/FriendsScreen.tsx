@@ -99,6 +99,7 @@ export const FriendsScreen = () => {
           <Text style={{ fontSize: 30, fontWeight: 'bold' }}>
             {isEnabled ? 'Add Friends' : 'Friends'}
           </Text>
+          <Text>{getAuth().currentUser?.displayName}</Text>
         </View>
 
         <View
