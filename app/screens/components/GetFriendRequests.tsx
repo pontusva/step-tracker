@@ -6,19 +6,23 @@ export const GetFriendRequests = ({ acceptFriendModalVisible }) => {
   const uid = getAuth().currentUser?.uid;
 
   const getRequests = async () => {
-    const response = await fetch(
-      'http://192.168.1.237:5000/get-friend-requests',
-      {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ uid }),
-      }
-    );
-    const data = await response.json();
+    try {
+      const response = await fetch(
+        'http://192.168.1.237:5000/get-friend-requests',
+        {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ uid }),
+        }
+      );
+      const data = await response.json();
 
-    setResult(data);
+      setResult(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
