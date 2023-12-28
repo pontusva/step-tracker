@@ -13,8 +13,8 @@ interface SendFriendRequest {
   Body: { currentUserId: string; friendUId: string };
 }
 
-interface GetFriendRequest {
-  Body: { uid: string };
+interface AcceptFriendRequest {
+  Body: { currentUserId: string; friendUId: string };
 }
 
 export async function routes(fastify: FastifyInstance) {
@@ -161,6 +161,35 @@ export async function auth(fastify: FastifyInstance) {
         console.error(error);
         reply.code(500).send({
           error: 'An error occurred while fetching the pending friend requests',
+        });
+      }
+    }
+  );
+
+  fastify.post(
+    '/accept-friend-request',
+    async (
+      request: FastifyRequest<AcceptFriendRequest>,
+      reply: FastifyReply
+    ) => {
+      try {
+        const { currentUserId, friendUId } = request.body;
+
+        if (!currentUserId || !friendUId) {
+          reply.code(400).send({ error: 'Missing required fields' });
+          return;
+        }
+
+        const { rows } = await fastify.pg.query(
+          queries.friendRequests.acceptFriendRequest,
+          [currentUserId, friendUId]
+        );
+
+        reply.code(200).send({ message: 'Friend request accepted', rows });
+      } catch (error) {
+        console.error(error);
+        reply.code(500).send({
+          error: 'An error occurred while accepting the friend request',
         });
       }
     }

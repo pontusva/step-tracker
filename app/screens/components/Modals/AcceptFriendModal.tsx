@@ -31,8 +31,33 @@ export const AcceptFriendModal = ({
     }
   };
 
-  const setFriendUidFunc = (uid: number) => {
-    setFriendUid(uid);
+  const acceptFriendRequest = async (friendUId: string) => {
+    console.log({ uid, friendUId });
+    try {
+      const response = await fetch(
+        'http://192.168.1.237:5000/accept-friend-request',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ currentUserId: uid, friendUId }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Handle successful friend request acceptance
+        console.log(data.message);
+        console.log(data);
+      } else {
+        // Handle error
+        console.error(data.error);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -57,6 +82,14 @@ export const AcceptFriendModal = ({
                 return (
                   <View key={index}>
                     <Text>{item.email}</Text>
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => {
+                        acceptFriendRequest(item.uid);
+                        setAcceptFriendModalVisible(!acceptFriendModalVisible);
+                      }}>
+                      <Text style={styles.textStyle}>Accept</Text>
+                    </Pressable>
                   </View>
                 );
               })}

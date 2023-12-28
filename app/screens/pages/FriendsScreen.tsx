@@ -42,7 +42,6 @@ export const FriendsScreen = () => {
   useEffect(() => {
     searchByEmail();
   }, [searchQuery]);
-  console.log(emailOfSearchedUser);
 
   const getRequests = async () => {
     try {
@@ -52,7 +51,7 @@ export const FriendsScreen = () => {
         }`
       );
       const data = await response.json();
-      console.log({ data });
+
       setGetFriendRequests(data);
     } catch (error) {
       console.log(error);

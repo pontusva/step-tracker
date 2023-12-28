@@ -18,5 +18,8 @@ export default {
     FROM friendships
     JOIN users ON friendships.user_uid = users.uid
     WHERE friendships.friend_uid = $1 AND friendships.status = 'PENDING';`,
+    acceptFriendRequest: `UPDATE friendships 
+    SET status = 'ACCEPTED', action_user_uid = $1 
+    WHERE user_uid = $2 AND friend_uid = $1;`,
   },
 };
