@@ -174,7 +174,7 @@ export const FriendsScreen = ({ navigation }) => {
                   <Button
                     onPress={async () => {
                       await setFriendId(friends.uid);
-                      // navigation.navigate('HiddenScreen');
+                      navigation.navigate('HiddenScreen');
                     }}>
                     {friends.email}
                   </Button>

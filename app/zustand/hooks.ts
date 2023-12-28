@@ -17,15 +17,7 @@ export const useBearStore: StateCreator<BearState> = create(set => ({
   removeAllBears: () => set({ bears: 0 }),
 }));
 
-export const useFriendStore = create(
-  persist(
-    set => ({
-      friendId: null,
-      setFriendId: (id: string) => set({ friendId: id }),
-    }),
-    {
-      name: 'friend-storage', // unique name for sessionStorage item
-      getStorage: () => sessionStorage, // use sessionStorage
-    }
-  )
-);
+export const useFriendStore = create(set => ({
+  friendId: null,
+  setFriendId: (id: string) => set({ friendId: id }),
+}));
