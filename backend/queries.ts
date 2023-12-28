@@ -10,7 +10,13 @@ export default {
                   DO UPDATE SET step_count_day = EXCLUDED.step_count_day 
                   RETURNING *`,
   },
-  // write a query that finds all registred users
+  compareWithFriends: {
+    getSteps: `SELECT steps.*, users.name, users.email
+    FROM steps
+    JOIN users ON steps.uid = users.uid
+    WHERE steps.uid = $1 AND steps.date = CURRENT_DATE;`,
+  },
+
   friendRequests: {
     searchByEmail: `SELECT * FROM users WHERE email LIKE '%' || $1 || '%';`,
     sendFriendRequest: `INSERT INTO friendships (user_uid, friend_uid, status, action_user_uid) VALUES ($1, $2, 'PENDING', $1);`,

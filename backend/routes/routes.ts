@@ -219,3 +219,31 @@ export async function auth(fastify: FastifyInstance) {
     }
   );
 }
+
+export async function compareWithFriends(fastify: FastifyInstance) {
+  fastify.get(
+    '/compare-with-friends',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      try {
+        const { userId } = request.query as { userId: string };
+
+        if (!userId) {
+          reply.code(400).send({ error: 'Missing required fields' });
+          return;
+        }
+
+        const { rows } = await fastify.pg.query(
+          queries.compareWithFriends.getSteps,
+          [userId]
+        );
+
+        reply.code(200).send(rows);
+      } catch (error) {
+        console.error(error);
+        reply.code(500).send({
+          error: 'An error occurred while fetching the steps',
+        });
+      }
+    }
+  );
+}

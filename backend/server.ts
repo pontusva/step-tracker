@@ -1,6 +1,6 @@
 import fastify from 'fastify';
 import dotenv from 'dotenv';
-import { routes, auth } from './routes/routes';
+import { routes, auth, compareWithFriends } from './routes/routes';
 import cors from '@fastify/cors';
 import dbConnection from './connections/db-connection';
 dotenv.config();
@@ -9,6 +9,7 @@ const server = fastify();
 
 server.register(cors);
 server.register(dbConnection);
+server.register(compareWithFriends);
 server.register(routes);
 server.register(auth);
 
