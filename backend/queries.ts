@@ -10,4 +10,9 @@ export default {
                   DO UPDATE SET step_count_day = EXCLUDED.step_count_day 
                   RETURNING *`,
   },
+  // write a query that finds all registred users
+  friendRequests: {
+    searchByEmail: `SELECT * FROM users WHERE email LIKE '%' || $1 || '%';`,
+    sendFriendRequest: `INSERT INTO friendships (user_uid, friend_uid, status, action_user_uid) VALUES ($1, $2, 'PENDING', $1);`,
+  },
 };

@@ -9,8 +9,8 @@ interface SyncSteps {
   Body: { uid: string; steps: number };
 }
 
-interface FriendRequest {
-  Body: { user_uid: string; friend_uid: string };
+interface SendFriendRequest {
+  Body: { currentUserId: string; friendUId: string };
 }
 
 interface GetFriendRequest {
@@ -82,8 +82,62 @@ export async function auth(fastify: FastifyInstance) {
       }
     }
   );
+
+  // write a route that handles the like query in queries.ts SELECT * FROM users WHERE email LIKE '%' || $1 || '%';
+  fastify.get(
+    '/search-user',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      try {
+        const { searchParam } = request.query as { searchParam: string };
+        console.log({ searchParam });
+        if (!searchParam) {
+          reply.code(400).send({ error: 'Missing required fields' });
+          return;
+        }
+
+        const result = await fastify.pg.query(
+          queries.friendRequests.searchByEmail,
+          [`%${searchParam}%`]
+        );
+
+        if (result.rowCount === 0) {
+          reply.code(500).send({ error: 'Failed to find user' });
+          return;
+        }
+
+        return result.rows;
+      } catch (error) {
+        console.error(error);
+        reply
+          .code(500)
+          .send({ error: 'An error occurred while searching for the user' });
+      }
+    }
+  );
+
+  fastify.post(
+    '/send-friend-request',
+    async (request: FastifyRequest<SendFriendRequest>, reply: FastifyReply) => {
+      try {
+        const { currentUserId, friendUId } = request.body;
+
+        if (!currentUserId || !friendUId) {
+          reply.code(400).send({ error: 'Missing required fields' });
+          return;
+        }
+
+        await fastify.pg.query(queries.friendRequests.sendFriendRequest, [
+          currentUserId,
+          friendUId,
+        ]);
+
+        reply.code(200).send({ message: 'Friend request sent' });
+      } catch (error) {
+        console.error(error);
+        reply.code(500).send({
+          error: 'An error occurred while sending the friend request',
+        });
+      }
+    }
+  );
 }
-
-// Write a post method that accepts a user_uid and friend_uid and updates the friendship status to 'ACCEPTED'
-
-// Write a get method that accepts a user_uid and returns all friends for that user
