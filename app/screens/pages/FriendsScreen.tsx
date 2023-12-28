@@ -67,6 +67,7 @@ export const FriendsScreen = () => {
           />
           {!isEnabled ? 'Friends' : 'Add friends'}
         </Text>
+        <GetFriendRequests />
         <Text>{getAuth().currentUser.displayName}</Text>
         <Ionicons name="person-add-outline" size={50} color="black" />
       </View>

@@ -9,14 +9,7 @@ export const GetFriendRequests = ({ acceptFriendModalVisible }) => {
     console.log({ uid });
     try {
       const response = await fetch(
-        'http://192.168.1.237:5000/get-friend-requests',
-        {
-          method: 'post',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ uid }),
-        }
+        `http://192.168.1.237:5000/pending-friend-requests?userId=${uid}`
       );
       const data = await response.json();
       console.log({ data });
@@ -32,7 +25,23 @@ export const GetFriendRequests = ({ acceptFriendModalVisible }) => {
 
   return (
     <View>
-      <Text>Get friend request number</Text>
+      {result && result.length > 0 ? (
+        <Text
+          style={{
+            color: 'red',
+            fontSize: 20,
+          }}>
+          {result.length}
+        </Text>
+      ) : (
+        <Text
+          style={{
+            color: 'red',
+            fontSize: 20,
+          }}>
+          0
+        </Text>
+      )}
     </View>
   );
 };

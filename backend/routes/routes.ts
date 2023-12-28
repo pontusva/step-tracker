@@ -140,4 +140,29 @@ export async function auth(fastify: FastifyInstance) {
       }
     }
   );
+  fastify.get(
+    '/pending-friend-requests',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      try {
+        const { userId } = request.query as { userId: string };
+
+        if (!userId) {
+          reply.code(400).send({ error: 'Missing required fields' });
+          return;
+        }
+
+        const { rows } = await fastify.pg.query(
+          queries.friendRequests.getFriendRequests,
+          [userId]
+        );
+
+        reply.code(200).send(rows);
+      } catch (error) {
+        console.error(error);
+        reply.code(500).send({
+          error: 'An error occurred while fetching the pending friend requests',
+        });
+      }
+    }
+  );
 }
