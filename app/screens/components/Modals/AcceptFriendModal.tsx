@@ -33,22 +33,26 @@ export const AcceptFriendModal = ({
   const addFriend = async (uid: number) => {
     setFriendUidFunc(uid);
     console.log({ friendUid });
-    const response = await fetch(
-      'http://192.168.1.237:5000/accept-friend-request',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_uid: uid,
-          friend_uid: friendUid,
-          action_user_uid: uid,
-        }),
-      }
-    );
-    const result = await response.json();
-    console.log(result);
+    try {
+      const response = await fetch(
+        'http://192.168.1.237:5000/accept-friend-request',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_uid: uid,
+            friend_uid: friendUid,
+            action_user_uid: uid,
+          }),
+        }
+      );
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
