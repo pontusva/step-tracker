@@ -24,6 +24,9 @@ export const FriendsScreen = () => {
   const [isEnabled, setIsEnabled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [emailOfSearchedUser, setEmailOfSearchedUser] = useState([]);
+  const [acceptFriendModalVisible, setAcceptFriendModalVisible] =
+    useState(false);
+  const [getFriendRequests, setGetFriendRequests] = useState([]);
   const onChangeSearch = query => setSearchQuery(query);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
@@ -40,6 +43,26 @@ export const FriendsScreen = () => {
     searchByEmail();
   }, [searchQuery]);
   console.log(emailOfSearchedUser);
+
+  const getRequests = async () => {
+    try {
+      const response = await fetch(
+        `http://192.168.1.237:5000/pending-friend-requests?userId=${
+          getAuth().currentUser.uid
+        }`
+      );
+      const data = await response.json();
+      console.log({ data });
+      setGetFriendRequests(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getRequests();
+  }, [acceptFriendModalVisible]);
+
   return (
     <>
       <View
@@ -67,9 +90,16 @@ export const FriendsScreen = () => {
           />
           {!isEnabled ? 'Friends' : 'Add friends'}
         </Text>
-        <GetFriendRequests />
+        <GetFriendRequests
+          acceptFriendModalVisible={acceptFriendModalVisible}
+        />
         <Text>{getAuth().currentUser.displayName}</Text>
-        <Ionicons name="person-add-outline" size={50} color="black" />
+        <Ionicons
+          onPress={() => setAcceptFriendModalVisible(!acceptFriendModalVisible)}
+          name="person-add-outline"
+          size={50}
+          color="black"
+        />
       </View>
       {isEnabled ? (
         <View>
@@ -102,6 +132,11 @@ export const FriendsScreen = () => {
       ) : (
         <Text>Friends</Text>
       )}
+      <AcceptFriendModal
+        getFriendRequests={getFriendRequests}
+        acceptFriendModalVisible={acceptFriendModalVisible}
+        setAcceptFriendModalVisible={setAcceptFriendModalVisible}
+      />
     </>
   );
 };

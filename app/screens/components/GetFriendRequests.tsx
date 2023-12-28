@@ -25,7 +25,7 @@ export const GetFriendRequests = ({ acceptFriendModalVisible }) => {
 
   return (
     <View>
-      {result && result.length > 0 ? (
+      {result ? (
         <Text
           style={{
             color: 'red',

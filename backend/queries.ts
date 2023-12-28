@@ -14,7 +14,7 @@ export default {
   friendRequests: {
     searchByEmail: `SELECT * FROM users WHERE email LIKE '%' || $1 || '%';`,
     sendFriendRequest: `INSERT INTO friendships (user_uid, friend_uid, status, action_user_uid) VALUES ($1, $2, 'PENDING', $1);`,
-    getFriendRequests: `SELECT users.name, friendships.*
+    getFriendRequests: `SELECT users.*, friendships.*
     FROM friendships
     JOIN users ON friendships.user_uid = users.uid
     WHERE friendships.friend_uid = $1 AND friendships.status = 'PENDING';`,
