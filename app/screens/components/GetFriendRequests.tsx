@@ -19,7 +19,7 @@ export const GetFriendRequests = ({ acceptFriendModalVisible }) => {
         }
       );
       const data = await response.json();
-
+      console.log({ data });
       setResult(data);
     } catch (error) {
       console.log(error);
@@ -32,14 +32,7 @@ export const GetFriendRequests = ({ acceptFriendModalVisible }) => {
 
   return (
     <View>
-      <Text
-        style={{
-          color: 'red',
-          fontSize: 20,
-          fontWeight: 'bold',
-        }}>
-        {result.length > 0 ? result.length : 0}
-      </Text>
+      <Text>Get friend request number</Text>
     </View>
   );
 };

@@ -88,12 +88,15 @@ export async function friendRequest(fastify: FastifyInstance) {
   fastify.get(
     '/emails',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const { search } = request.query as { search: string };
+      const { search, uid } = request.query as {
+        search: string;
+        uid: string;
+      };
 
       try {
         const result = await fastify.pg.query(
-          'SELECT users.email, users.uid FROM users WHERE email LIKE $1',
-          [`%${search}%`]
+          'SELECT users.email, users.uid FROM users WHERE email LIKE $1 AND uid != $2',
+          [`%${search}%`, uid]
         );
 
         if (result.rowCount === 0) {

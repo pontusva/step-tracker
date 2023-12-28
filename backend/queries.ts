@@ -38,6 +38,6 @@ export default {
     getFriendRequests: `SELECT f.*, u.name AS friend_name 
     FROM friendships f 
     JOIN users u ON f.friend_uid = u.uid 
-    WHERE (f.user_uid = $1 OR f.friend_uid = $1) AND f.status = 'PENDING'`,
+    WHERE f.user_uid = $1 AND f.status = 'PENDING'`,
   },
 };
