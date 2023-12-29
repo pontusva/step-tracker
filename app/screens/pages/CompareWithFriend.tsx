@@ -18,6 +18,7 @@ export default function CompareWithFriend({ navigation }) {
 
       const result = await response.json();
       setFriendData(result);
+      console.log('friend data', result);
     } catch (error) {
       console.log(error);
     }
@@ -67,10 +68,10 @@ export default function CompareWithFriend({ navigation }) {
             {friendData &&
               friendData.map((item: any) => {
                 return (
-                  <>
+                  <View key={item.name}>
                     <Text>{item.name}</Text>
-                    <Text>{item && item.step_count_day}</Text>
-                  </>
+                    <Text>{item.step_count_day && item.step_count_day}</Text>
+                  </View>
                 );
               })}
           </View>
@@ -79,7 +80,7 @@ export default function CompareWithFriend({ navigation }) {
             {yourData &&
               yourData.map((item: any) => {
                 return (
-                  <View>
+                  <View key={item.name}>
                     <Text>You</Text>
                     <Text>{item && item.step_count_day}</Text>
                   </View>

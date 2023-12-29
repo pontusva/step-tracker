@@ -12,8 +12,8 @@ export default {
   },
   compareWithFriends: {
     getSteps: `SELECT steps.*, users.name, users.email
-    FROM steps
-    JOIN users ON steps.uid = users.uid
+    FROM users
+    LEFT JOIN steps ON steps.uid = users.uid
     WHERE steps.uid = $1 AND steps.date = CURRENT_DATE;`,
   },
 
