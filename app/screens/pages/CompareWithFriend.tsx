@@ -2,7 +2,7 @@ import { View, Text, SafeAreaView, Button } from 'react-native';
 import { useFriendStore } from '../../zustand/hooks';
 import { useEffect, useState } from 'react';
 import { getAuth } from 'firebase/auth';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+
 export default function CompareWithFriend({ navigation }) {
   const [friendData, setFriendData] = useState([]);
   const [yourData, setYourData] = useState([]);
