@@ -11,7 +11,7 @@ This is a test application developed to experiment with and learn about various 
 ## Technologies Used
 
 - Frontend: React Native
-- Backend: Node.js with Express
+- Backend: Node.js with Fastify
 - Database: PostgreSQL
 - State Management: Zustand
 - Linting: ESLint
