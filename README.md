@@ -26,13 +26,16 @@ The project is divided into two main directories: `app` and `backend`.
 
 ## View of the app
 
+<div style={{
+  display: flex
+}}>
 <img src="./app/app_photos/IMG_0613.PNG" alt="Alt Text" width="200"/>
 <img src="./app/app_photos/IMG_0614.PNG" alt="Alt Text" width="200"/>
 <img src="./app/app_photos/IMG_0617.PNG" alt="Alt Text" width="200"/>
 <img src="./app/app_photos/IMG_0618.PNG" alt="Alt Text" width="200"/>
 <img src="./app/app_photos/IMG_0615.PNG" alt="Alt Text" width="200"/>
 <img src="./app/app_photos/IMG_0616.PNG" alt="Alt Text" width="200"/>
-
+</div>
 ## Running the App
 
 To run the app, you'll need to start both the frontend and the backend.
