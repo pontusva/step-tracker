@@ -7,7 +7,7 @@ import { ImageBackground } from 'react-native';
 
 export default function CompareWithFriend({ navigation }) {
   const [friendData, setFriendData] = useState([]);
-  const [yourData, setYourData] = useState([]);
+  const [currentUser, setCurrentUser] = useState([]);
   const [winner, setWinner] = useState(null);
   const getFriendId = useFriendStore((state: any) => state.friendId);
 
@@ -26,7 +26,7 @@ export default function CompareWithFriend({ navigation }) {
     }
   };
 
-  const getYourData = async () => {
+  const getCurrentUser = async () => {
     try {
       const response = await fetch(
         `http://192.168.1.237:5000/compare-with-friends?userId=${
@@ -35,16 +35,16 @@ export default function CompareWithFriend({ navigation }) {
       );
 
       const result = await response.json();
-      setYourData(result);
+      setCurrentUser(result);
     } catch (error) {
       console.log(error);
     }
   };
 
-  // write a function that takes friendData and yourData and compares them and returns the winner
+  // write a function that takes friendData and currentUser and compares them and returns the winner
 
   const compareData = () => {
-    if (friendData[0].step_count_day > yourData[0].step_count_day) {
+    if (friendData[0].step_count_day > currentUser[0].step_count_day) {
       setWinner(friendData[0].name);
     } else {
       setWinner('You');
@@ -53,7 +53,7 @@ export default function CompareWithFriend({ navigation }) {
 
   useEffect(() => {
     getFriendData();
-    getYourData();
+    getCurrentUser();
   }, []);
   return (
     <ImageBackground
@@ -91,8 +91,8 @@ export default function CompareWithFriend({ navigation }) {
               </View>
 
               <View>
-                {yourData &&
-                  yourData.map((item: any) => {
+                {currentUser &&
+                  currentUser.map((item: any) => {
                     return (
                       <View key={item.name}>
                         <Text style={styles.text}>You</Text>
