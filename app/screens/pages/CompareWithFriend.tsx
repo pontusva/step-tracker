@@ -72,7 +72,7 @@ export default function CompareWithFriend({ navigation }) {
                 alignItems: 'center',
               }}>
               <View>
-                {friendData &&
+                {friendData.length > 0 ? (
                   friendData.map((item: any) => {
                     return (
                       <View key={item.name}>
@@ -82,7 +82,12 @@ export default function CompareWithFriend({ navigation }) {
                         </Text>
                       </View>
                     );
-                  })}
+                  })
+                ) : (
+                  <Text style={styles.textNoSync}>
+                    This friend haven't synced today
+                  </Text>
+                )}
               </View>
 
               <View>
@@ -117,6 +122,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000000c0',
+  },
+  textNoSync: {
+    color: 'red',
+    fontSize: 14,
+    maxWidth: 175,
   },
   text: {
     color: 'white',
